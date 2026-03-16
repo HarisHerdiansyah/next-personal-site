@@ -1,26 +1,208 @@
 @import "tailwindcss";
+/* @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"); */
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+body {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: #050505;
+  color: white;
+  min-height: 100vh;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.gradient-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100svh;
+  min-height: 100vh;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+main {
+  position: relative;
+  z-index: 10;
+}
+
+.gradient-sphere {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(110px);
+}
+
+.sphere-1 {
+  width: clamp(260px, 40vw, 720px);
+  height: clamp(260px, 40vw, 720px);
+  background: linear-gradient(
+    40deg,
+    rgba(133, 89, 255, 0.5),
+    rgba(98, 216, 249, 0.3)
+  );
+  top: -45%;
+  left: -15%;
+  animation: float-1 15s ease-in-out infinite alternate;
+}
+
+.sphere-2 {
+  width: clamp(300px, 45vw, 780px);
+  height: clamp(300px, 45vw, 780px);
+  background: linear-gradient(
+    240deg,
+    rgba(133, 89, 255, 0.5),
+    rgba(98, 216, 249, 0.3)
+  );
+  bottom: -35%;
+  right: -25%;
+  animation: float-2 18s ease-in-out infinite alternate;
+}
+
+.sphere-3 {
+  width: clamp(220px, 30vw, 560px);
+  height: clamp(220px, 30vw, 560px);
+  background: linear-gradient(
+    120deg,
+    rgba(133, 89, 255, 0.5),
+    rgba(98, 216, 249, 0.3)
+  );
+  top: 50%;
+  left: 10%;
+  animation: float-3 20s ease-in-out infinite alternate;
+}
+
+@keyframes float-1 {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    transform: translate(10%, 10%) scale(1.1);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes float-2 {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    transform: translate(-10%, -5%) scale(1.15);
+  }
+}
+
+@keyframes float-3 {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.3;
+  }
+  100% {
+    transform: translate(-5%, 10%) scale(1.05);
+    opacity: 0.6;
+  }
+}
+
+.grid-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: 40px 40px;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  z-index: 2;
+}
+
+.particles-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  pointer-events: none;
+  contain: layout paint;
+}
+
+.particle {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+#hero span,
+#about-me span {
+  color: #38bdf8;
+  font-weight: 600;
+}
+
+.tech-wrapper > div {
+  border: 1px solid transparent;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
+}
+
+.tech-wrapper > div:hover {
+  border-color: #38bdf8;
+  box-shadow: 0 6px 14px rgba(56, 189, 248, 0.2);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 1024px) {
+  .gradient-sphere {
+    filter: blur(90px);
+  }
+
+  .grid-overlay {
+    background-size: 34px 34px;
+  }
+}
+
+@media (max-width: 640px) {
+  .gradient-background {
+    height: 100%;
+  }
+
+  .gradient-sphere {
+    filter: blur(64px);
+  }
+
+  .sphere-1 {
+    width: 58vw;
+    height: 58vw;
+    top: -25%;
+    left: -18%;
+  }
+
+  .sphere-2 {
+    width: 68vw;
+    height: 68vw;
+    bottom: -25%;
+    right: -35%;
+  }
+
+  .sphere-3 {
+    width: 50vw;
+    height: 50vw;
+    top: 62%;
+    left: -2%;
+  }
+
+  .grid-overlay {
+    background-size: 28px 28px;
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  }
+}
+
+@media (min-width: 1536px) {
+  .gradient-sphere {
+    filter: blur(130px);
+  }
 }
