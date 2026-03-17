@@ -12,9 +12,9 @@ export default function Home() {
   return (
     <>
       <ParticleBackground />
-      <main className="px-4 sm:px-6 md:px-8 lg:px-10">
+      <main className="h-svh overflow-y-auto overscroll-y-contain snap-y snap-proximity scroll-smooth px-4 sm:px-6 md:px-8 lg:px-10">
         {/* <!-- Hero Section --> */}
-        <section className="flex items-center justify-center min-h-svh py-16 sm:py-20">
+        <section className="flex items-center justify-center snap-start snap-always h-svh py-16 sm:py-20">
           <div
             id="hero"
             className="max-w-190 flex flex-col items-center justify-center text-center gap-4 sm:gap-6"
@@ -31,7 +31,7 @@ export default function Home() {
         {/* <!-- Hero Section --> */}
 
         {/* <!-- About Me Section --> */}
-        <section className="py-16 sm:py-20">
+        <section className="flex items-center justify-center snap-start snap-always h-svh py-16 sm:py-20">
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-8 lg:gap-10 max-w-300 mx-auto">
             <div className="md:col-span-2 lg:col-span-3 p-4 sm:p-8 lg:p-10">
               <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-[#38BDF8] text-center">
@@ -77,7 +77,7 @@ export default function Home() {
         {/* <!-- About Me Section --> */}
 
         {/* <!-- Technology Section --> */}
-        <section className="py-16 sm:py-20">
+        <section className="flex items-center justify-center snap-start snap-always h-svh py-16 sm:py-20">
           <div className="p-4 sm:p-8 lg:p-10 max-w-300 mx-auto">
             <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-[#38BDF8] text-center">
               Tools and Technologies
@@ -104,7 +104,7 @@ export default function Home() {
         {/* <!-- Technology Section --> */}
 
         {/* <!-- Project Section --> */}
-        <section className="py-16 sm:py-20">
+        <section className="flex items-center justify-center snap-start snap-always h-svh py-16 sm:py-20">
           <div className="p-4 sm:p-8 lg:p-10 max-w-300 mx-auto">
             <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-[#38BDF8] text-center">
               Selected Works and Explorations
@@ -166,7 +166,7 @@ export default function Home() {
         {/* <!-- Project Section --> */}
 
         {/* <!-- Connect Section --> */}
-        <section className="py-16 sm:py-20">
+        <section className="flex items-center justify-center snap-start snap-always h-svh py-16 sm:py-20">
           <div className="p-4 sm:p-8 lg:p-10 max-w-300 mx-auto">
             <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-[#38BDF8] text-center">
               Let&apos;s Connect
