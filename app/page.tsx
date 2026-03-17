@@ -1,5 +1,14 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useMemo, useRef } from "react";
+import {
+  motion,
+  useAnimationControls,
+  useInView,
+  useScroll,
+} from "motion/react";
 import ParticleBackground from "@/components/ParticleBackground";
 import {
   ABOUT_HIGLIGHTS,
@@ -7,39 +16,155 @@ import {
   PROJECTS,
   TECH_STACK,
 } from "@/utils/constants";
+import {
+  heroParent,
+  heroChild,
+  aboutArticleParent,
+  aboutArticleChild,
+  highlightParent,
+  highlightChild,
+  techGridParent,
+  techGridChild,
+  projectGridParent,
+  projectGridChild,
+} from "@/utils/motion";
 
 export default function Home() {
+  const mainRef = useRef<HTMLElement>(null);
+  const aboutRef = useRef<HTMLElement>(null);
+  const techRef = useRef<HTMLElement>(null);
+  const projectRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ container: mainRef });
+
+  const leftAboutControls = useAnimationControls();
+  const rightAboutControls = useAnimationControls();
+  const techTitleControls = useAnimationControls();
+  const techGridControls = useAnimationControls();
+  const projectTitleControls = useAnimationControls();
+  const projectGridControls = useAnimationControls();
+
+  const viewProps = useMemo(
+    () => ({
+      once: true,
+      amount: 0.3,
+      root: mainRef,
+    }),
+    [],
+  );
+
+  const aboutInView = useInView(aboutRef, viewProps);
+  const techInView = useInView(techRef, viewProps);
+  const projectInView = useInView(projectRef, viewProps);
+
+  useEffect(() => {
+    if (!aboutInView) return;
+
+    const run = async () => {
+      await leftAboutControls.start("visible");
+      await rightAboutControls.start("visible");
+    };
+
+    run();
+  }, [aboutInView, leftAboutControls, rightAboutControls]);
+
+  useEffect(() => {
+    if (!techInView) return;
+
+    const run = async () => {
+      await techTitleControls.start({
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.55, ease: "easeOut" },
+      });
+      await techGridControls.start("visible");
+    };
+
+    run();
+  }, [techInView, techTitleControls, techGridControls]);
+
+  useEffect(() => {
+    if (!projectInView) return;
+
+    const run = async () => {
+      await projectTitleControls.start({
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.55, ease: "easeOut" },
+      });
+      await projectGridControls.start("visible");
+    };
+
+    run();
+  }, [projectInView, projectTitleControls, projectGridControls]);
+
   return (
     <>
+      <motion.div
+        style={{
+          scaleX: scrollYProgress,
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          height: 5,
+          originX: 0,
+          backgroundColor: "#38bdf8",
+          zIndex: 50,
+        }}
+      />
       <ParticleBackground />
-      <main className="h-svh overflow-y-auto overscroll-y-contain touch-pan-y snap-y snap-proximity px-4 sm:px-6 md:px-8 lg:px-10">
+      <main
+        ref={mainRef}
+        className="h-svh overflow-y-auto overscroll-y-contain touch-pan-y snap-y snap-proximity px-4 sm:px-6 md:px-8 lg:px-10"
+      >
         {/* <!-- Hero Section --> */}
         <section className="flex items-center justify-center snap-start min-h-svh py-16 sm:py-20">
-          <div
+          <motion.div
             id="hero"
             className="max-w-190 flex flex-col items-center justify-center text-center gap-4 sm:gap-6"
+            variants={heroParent}
+            initial="hidden"
+            animate="visible"
           >
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">
+            <motion.h1
+              className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight"
+              variants={heroChild}
+            >
               Hi! <span>I&apos;m Haris Herdiansyah</span>
-            </h1>
-            <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed">
+            </motion.h1>
+            <motion.h2
+              className="text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed"
+              variants={heroChild}
+            >
               A continuous learner and developer building modern interactive
               UIs, scalable system, and data-driven machine learning workflows
-            </h2>
-          </div>
+            </motion.h2>
+          </motion.div>
         </section>
         {/* <!-- Hero Section --> */}
 
         {/* <!-- About Me Section --> */}
-        <section className="flex items-center justify-center snap-start min-h-svh py-16 sm:py-20">
+        <section
+          ref={aboutRef}
+          className="flex items-center justify-center snap-start min-h-svh py-16 sm:py-20"
+        >
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-8 lg:gap-10 max-w-300 mx-auto">
-            <div className="md:col-span-2 lg:col-span-3 p-4 sm:p-8 lg:p-10">
-              <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-[#38BDF8] text-center">
+            <motion.div
+              className="md:col-span-2 lg:col-span-3 p-4 sm:p-8 lg:p-10"
+              variants={aboutArticleParent}
+              initial="hidden"
+              animate={leftAboutControls}
+            >
+              <motion.h2
+                className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-[#38BDF8] text-center"
+                variants={aboutArticleChild}
+              >
                 About Me
-              </h2>
-              <article
+              </motion.h2>
+              <motion.article
                 id="about-me"
                 className="space-y-4 sm:space-y-5 text-base md:text-lg leading-relaxed"
+                variants={aboutArticleChild}
               >
                 <p>
                   I am a <span>software engineering enthusiast</span> driven by
@@ -56,11 +181,20 @@ export default function Home() {
                   evaluation—while also diving into the
                   <span>foundational theories of computer science</span>.
                 </p>
-              </article>
-            </div>
-            <div className="md:col-span-1 px-2 sm:px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 gap-4 sm:gap-5 content-center">
+              </motion.article>
+            </motion.div>
+            <motion.div
+              className="md:col-span-1 px-2 sm:px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 gap-4 sm:gap-5 content-center"
+              variants={highlightParent}
+              initial="hidden"
+              animate={rightAboutControls}
+            >
               {ABOUT_HIGLIGHTS.map((h) => (
-                <div key={h.alt} className="flex items-center gap-3 sm:gap-4">
+                <motion.div
+                  key={h.alt}
+                  className="flex items-center gap-3 sm:gap-4"
+                  variants={highlightChild}
+                >
                   <Image
                     src={h.src}
                     width={64}
@@ -69,24 +203,37 @@ export default function Home() {
                     className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16"
                   />
                   <p className="text-sm sm:text-base">{h.textContent}</p>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
         </section>
         {/* <!-- About Me Section --> */}
 
         {/* <!-- Technology Section --> */}
-        <section className="flex items-center justify-center snap-start min-h-svh py-16 sm:py-20">
+        <section
+          ref={techRef}
+          className="flex items-center justify-center snap-start min-h-svh py-16 sm:py-20"
+        >
           <div className="p-4 sm:p-8 lg:p-10 max-w-300 mx-auto">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-[#38BDF8] text-center">
+            <motion.h2
+              className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-[#38BDF8] text-center"
+              initial={{ opacity: 0, y: 20 }}
+              animate={techTitleControls}
+            >
               Tools and Technologies
-            </h2>
-            <div className="tech-wrapper grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
+            </motion.h2>
+            <motion.div
+              className="tech-wrapper grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-5 lg:gap-6"
+              variants={techGridParent}
+              initial="hidden"
+              animate={techGridControls}
+            >
               {TECH_STACK.map((tech) => (
-                <div
+                <motion.div
                   key={tech.alt}
                   className="bg-slate-700/50 rounded-lg p-3 sm:p-4 flex flex-col items-center justify-center gap-2 sm:gap-3 aspect-square"
+                  variants={techGridChild}
                 >
                   <Image
                     src={tech.src}
@@ -96,25 +243,38 @@ export default function Home() {
                     alt={tech.alt}
                   />
                   <p className="text-sm md:text-base">{tech.textContent}</p>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
         </section>
         {/* <!-- Technology Section --> */}
 
         {/* <!-- Project Section --> */}
-        <section className="flex items-center justify-center snap-start min-h-svh py-16 sm:py-20">
+        <section
+          ref={projectRef}
+          className="flex items-center justify-center snap-start min-h-svh py-16 sm:py-20"
+        >
           <div className="p-4 sm:p-8 lg:p-10 max-w-300 mx-auto">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-[#38BDF8] text-center">
+            <motion.h2
+              className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-[#38BDF8] text-center"
+              initial={{ opacity: 0, y: 20 }}
+              animate={projectTitleControls}
+            >
               Selected Works and Explorations
-            </h2>
+            </motion.h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
+            <motion.div
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6"
+              variants={projectGridParent}
+              initial="hidden"
+              animate={projectGridControls}
+            >
               {PROJECTS.map((project) => (
-                <div
+                <motion.div
                   key={project.title}
                   className="group relative flex flex-col rounded-2xl bg-slate-900/50 border border-slate-800 backdrop-blur-sm overflow-hidden hover:border-sky-500/30 transition-all duration-300 hover:-translate-y-1"
+                  variants={projectGridChild}
                 >
                   <div className="relative w-full aspect-video bg-slate-800 overflow-hidden">
                     <Image
@@ -158,9 +318,9 @@ export default function Home() {
                       ))}
                     </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
         </section>
         {/* <!-- Project Section --> */}
